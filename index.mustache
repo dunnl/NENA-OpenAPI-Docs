@@ -3,14 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Documentation Index</title>
+    <title>Bulma Centered Page</title>
+    <!-- Bulma CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    >
+    <style>
+        html, body {
+            height: 100%; /* Make the body stretch to full viewport height */
+            margin: 0;
+            background-color: #f8f8f8; /* Whitish background */
+        }
+        .navbar {
+            background-color: #e63946; /* Red navbar */
+        }
+        .navbar .navbar-item,
+        .navbar .navbar-brand a {
+            color: #fff; /* White text in navbar */
+        }
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100%; /* Full viewport height */
+        }
+        .main-content {
+            flex: 1; /* Take up remaining vertical space */
+            display: flex;
+            justify-content: flex-start;
+            align-items: start;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        .content-box {
+            width: 50%; /* Main body width */
+            background-color: #ffffff; /* White background */
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            border-radius: 8px; /* Rounded corners */
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .footer {
+            background-color: #000; /* Black footer bar */
+            color: #fff; /* White text */
+            text-align: center;
+            padding: 1rem 0;
+        }
+        .api-link {
+            padding: 0.5rem;
+        }
+        .note {
+            margin-bottom: 2rem;
+        }
+    </style>
 </head>
 <body>
-    <h1>API Documentation</h1>
-    <ul>
-        {{#files}}
-        <li><a href="{{.}}">{{.}}</a></li>
-        {{/files}}
-    </ul>
+  <div class="main-container">
+    <!-- Top-level Navbar -->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#">
+          <strong>NENA OpenAPI Documentation</strong>
+        </a>
+        <a class="navbar-item" href="#">
+          <strong>NENA Github Page</strong>
+        </a>
+        <a class="navbar-item" href="#">
+          <strong>Repo for this Project</strong>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content (Vertically Centered) -->
+    <div class="main-content">
+      <div class="content-box">
+        <h1 class="title">NENA OpenAPI HTML Documentation</h1>
+        <p class="content">
+          The links below contain documentation for each of the OpenAPI specifications developed by the <a href="https://dev.nena.org/home">NENA Development Group</a>. Documentation is included for any OpenAPI specification file in any of the <a href="https://github.com/NENA911/">Github repositories</a> managed by NENA.
+          Documentation has been generated with <a href="https://redocly.com/">Redocly</a>.
+        </p>
+        <p class="note">
+          (<strong>Note</strong>: This webpage is a volunteer project not affiliated or sponsored by NENA.)
+        </p>
+        <h1 class="title is-4">OpenAPI Files</h1>
+        <ul>
+          {{#files}}
+          <li class="api-link"><a href="{{.}}">{{.}}</a></li>
+          {{/files}}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="content">
+        &copy; 2024 Public Safety Documentation | All Rights Reserved
+      </div>
+    </footer>
+  </div>
 </body>
 </html>

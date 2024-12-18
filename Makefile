@@ -19,12 +19,28 @@ REDOCLY := node_modules/.bin/redocly
 # Default target
 all: bundled docs indexpage
 
+.PHONY: all
+
+################################################################################
+# Initialization
+################################################################################
 clone-nena-repos:
 	 ./clone-nena-repos.sh
 
+update-nena-repos:
+	./update-nena-repos.sh
+
 copy-yaml-files:
+	mkdir -p yaml/
 	find NENA911/ -iname "*.yaml" -exec cp {} yaml/ \;
 
+initialize: clone-nena-repos copy-yaml-files
+
+.PHONY: clone-nena-repos update-nena-repos copy-yaml-files initialize
+
+################################################################################
+# Show shell-defined variables
+################################################################################
 show-openapi:
 	@echo $(OPENAPI_FILES)
 
@@ -34,25 +50,33 @@ show-bundled:
 show-docs:
 	@echo $(HTML_FILES)
 
-# Rule to generate bundled YAML files
+.PHONY: show-openapi show-bundled show-docs
+
+################################################################################
+# Generate bundled OpenAPI files and HTML documentation
+################################################################################
+# Generate all bundled files
 bundled: $(BUNDLED_FILES)
 
 $(BUNDLED_DIR)/%.yaml: $(YAML_DIR)/%.yaml
 	@echo "Bundling $< into $@"
 	$(REDOCLY) bundle $< --output $@
 
-# Rule to generate HTML documentation
+# Generate all HTML documentation
 docs: $(HTML_FILES)
 
 $(DOCS_DIR)/%.html: $(BUNDLED_DIR)/%.yaml
 	@echo "Generating HTML docs for $< into $@"
 	$(REDOCLY) build-docs $< --output $@
 
+# Generate top-level index.html
 # Rule to generate the index.html file
-indexpage: index.mustache generate_index.js
+$(DOCS_DIR)/index.html: index.mustache generate_index.js
 	@echo "Generating index.html with Mustache..."
 	node generate_index.js
 	@echo "index.html created successfully."
+
+indexpage: $(DOCS_DIR)/index.html
 
 # Clean up generated files
 clean:
@@ -63,5 +87,4 @@ clean:
 nuke: clean
 	rm -Rf $(YAML_DIR)
 
-.PHONY: all bundled docs clean
-.PHONY: show-openapi indexpage
+.PHONY: bundled docs indexpage clean nuke
